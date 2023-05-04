@@ -20,7 +20,7 @@
         let usuarios = data;
         let saida = '';
         usuarios.map(function(usuario) {
-          saida += '<strong> '+ `${usuario.nome_completo}` + '</strong> ' + `${usuario.email}`  + ' - ' +  `${usuario.telefone}`;
+          saida += '<strong> '+ `${usuario.nome_completo}` + '</strong> ' + `${usuario.email}`  + ' - ' +  `${usuario.telefone}` ' - ' +  `${usuario.idade}`;
           saida += ' - <a href="/atualizar.html?userId=' + `${usuario.userId}` + '">EDITAR</a>';
           saida += ' | <a href="/removeUsuario?userId='+`${usuario.userId}`+'">REMOVER</a></br>';
         });
