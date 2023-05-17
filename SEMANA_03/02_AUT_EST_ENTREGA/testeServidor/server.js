@@ -5,7 +5,6 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3000;
 
-// Conectar ao banco de dados
 const db = new sqlite3.Database("C:/Users/Inteli/Documents/testeServidor/curriculo.sql", (err) => {
   if (err) {
     console.error(err.message);
@@ -14,7 +13,6 @@ const db = new sqlite3.Database("C:/Users/Inteli/Documents/testeServidor/curricu
   console.log('Conectado ao banco de dados SQLite.');
 });
 
-// Resto do código do servidor...
 app.get('/experiencias', (req, res) => {
     const sql = 'SELECT * FROM Experiencia';
   
