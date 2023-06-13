@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo</title>
+</head>
+<body>
+    <div>
+        <h1>Currículo</h1>
+        <form id="formulario" onsubmit="adicionarUsuario(event)">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required><br>
+            
+            <label for="cargo">Cargo:</label>
+            <input type="text" id="cargo" required><br>
+            
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" required><br>
+            
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" required><br>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" required><br>
+            
+            <button type="submit">Adicionar Usuário</button>
+        </form>
+    </div>
+        <div>
+            <h2>TABELA USUARIO</h2>
+            <table id="tabelaUsuarios" style="border: 1px solid black;">
+                <tr>
+                    <th>Nome</th>
+                    <th>Cargo</th>
+                    <th>Endereço</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </table>
+        </div>
+    
+
+    <script>
+        function exibirDados() {
+            fetch('/usuarios')
+                .then(response => response.json())
+                .then(data => {
+                    const tabelaUsuarios = document.getElementById('tabelaUsuarios');
+                    tabelaUsuarios.innerHTML = ''; // Limpa o conteúdo da tabela
+                    let html = '';
+
+                    // Insere a linha de títulos das colunas
+                    html += `
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cargo</th>
+                            <th>Endereço</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    `;
+
+                    // Insere os dados dos usuários
+                    data.forEach(usuario => {
+                     html += `
+                         <tr>
+                            <td>${usuario.Nome}</td>
+                            <td>${usuario.Cargo}</td>
+                            <td>${usuario.Endereco}</td>
+                            <td>${usuario.Telefone}</td>
+                            <td>${usuario.Email}</td>
+                            <td>
+                                <button onclick="excluirUsuario('${usuario.Email}')">Excluir</button>
+                                <button onclick="editarUsuario('${usuario.Email}')">Editar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                    tabelaUsuarios.innerHTML = html;
+                });
+        }
+
+        function adicionarUsuario(event) {
+            event.preventDefault();
+
+            const formulario = document.getElementById('formulario');
+            const nome = document.getElementById('nome').value;
+            const cargo = document.getElementById('cargo').value;
+            const endereco = document.getElementById('endereco').value;
+            const telefone = document.getElementById('telefone').value;
+            const email = document.getElementById('email').value;
+
+            const novoUsuario = {
+                Nome: nome,
+                Cargo: cargo,
+                Endereco: endereco,
+                Telefone: telefone,
+                Email: email
+            };
+
+            fetch('/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(novoUsuario)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Novo usuário adicionado. Email:', data.email);
+                    formulario.reset();
+                    exibirDados();
+                });
+        }
+
+        function excluirUsuario(email) {
+            if (confirm('Tem certeza que deseja excluir esse usuário?')) {
+             fetch(`/usuarios/${encodeURIComponent(email)}`, {
+                 method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Usuário excluído. Email:', data.email);
+                    exibirDados();
+                 });
+           }
+        }
+
+        function editarUsuario(email) {
+           fetch(`/usuarios/${encodeURIComponent(email)}`)
+                .then(response => response.json())
+                .then(usuario => {
+                    const formulario = document.getElementById('formulario');
+                    formulario.reset();
+
+                    // Preenche o formulário com os dados do usuário
+                    document.getElementById('nome').value = usuario.Nome;
+                    document.getElementById('cargo').value = usuario.Cargo;
+                    document.getElementById('endereco').value = usuario.Endereco;
+                    document.getElementById('telefone').value = usuario.Telefone;
+                    document.getElementById('email').value = usuario.Email;
+              });
+        }
+
+        
+        
+
+        // Exibe os dados ao carregar a página
+        exibirDados();
+    </script>
+</body>
+</html>
