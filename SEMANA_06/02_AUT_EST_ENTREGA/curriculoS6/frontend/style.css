@@ -1,0 +1,60 @@
+/* style.css */
+
+body {
+    background-color: #ebe8d4;
+    font-family: Arial;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+
+  h2 {
+    text-align: center;
+    font-style: italic;
+    }
+
+  h3 {
+    font-size: 20px;
+    color: #6d5e00;
+  }
+
+
+  
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+
+  .perfil {
+    border-radius: 100px;
+    margin-right: 20px;
+  }
+
+  .container1 {
+    background-color: #feec74;
+    border-radius: 30px;
+    padding: 10px;
+    padding-bottom: 50px;
+    margin-bottom: 15px;
+  }
+
+  .container2 {
+    background-color: #feec74;
+    border-radius: 30px;
+    padding: 10px;
+  }
+
+  .form {
+    background-color: #feec74;
+    border-radius: 30px;
+    padding: 10px;
+  }
+
+  .respostaNota {
+    font-size: 50px;
+    color: red;
+  }
+  /* Adicione mais regras de estilo conforme necessário */
+  
